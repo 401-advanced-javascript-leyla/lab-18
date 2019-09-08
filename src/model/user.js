@@ -1,5 +1,10 @@
 'use strict';
 
+/**
+ * User Model
+ * @module /src/model/user.js
+ */
+
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -31,6 +36,8 @@ userSchema.virtual('capabilities',{
   foreignField: 'role',
   justOne: false,
 });
+
+
 
 userSchema.pre('findOne', async function() {
   try{
