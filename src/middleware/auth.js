@@ -1,5 +1,10 @@
 'use strict';
 
+/**
+ * Auth Routes Module
+ * @module routes/authRoutes
+ */
+
 const User = require('../model/user.js');
 
 module.exports = capability => {
@@ -19,6 +24,14 @@ module.exports = capability => {
       _authError();
     }
 
+
+
+    /**
+     *This function check the auth string from the request body, authenticate user and then return user and token
+     *
+     * @param {string} authString
+     * @returns {object} user information (token)
+     */
     function _authBasic(authString) {
       let base64Buffer = Buffer.from(authString, 'base64');
       let bufferString = base64Buffer.toString();
@@ -30,11 +43,25 @@ module.exports = capability => {
         .catch(_authError);
     }
 
+    /**
+     *This function authenticate bearer
+     *
+     * @param {string} authString
+     * @returns user information
+     */
+
     function _authBearer(authString) {
       return User.authenticateToken(authString)
         .then(user => _authenticate(user))
         .catch(_authError);
     }
+
+    /**
+     *This function authenticate user information
+     *
+     * @param {object} user
+     * @returns user information (token)
+     */
 
     function _authenticate(user) {
       if (user && (!capability || user.can(capability))) {
